@@ -1,6 +1,13 @@
 <template>
-  <q-page class="row items-center justify-center">
+  <q-page class="row justify-center relative-position q-pt-md">
+    <input
+      v-model="filter"
+      :style="{ width: '200px', zIndex: 10000, top: '0.5rem', right: '0.5rem' }"
+      class="fixed-top-right q-pa-sm shadow-1 rounded-borders no-border"
+      placeholder="Buscar canción ..."
+    />
     <q-table
+      class="q-my-xl"
       style="width: 95vw"
       flat
       bordered
@@ -9,27 +16,16 @@
       :columns="columns"
       row-key="name"
       :filter="filter"
-      :rows-per-page-options="[0]"
+      :rows-per-page-options="[10, 20, 30, 50, 0]"
     >
-      <template v-slot:top-right>
-        <q-input
-          borderless
-          dense
-          debounce="300"
-          v-model="filter"
-          placeholder="Search"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
     </q-table>
+    <div class="text-grey-5">powered by @jeff.ssl</div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
+//eslint-disable @typescript-eslint/no-explicit-any
+import { onBeforeMount, ref } from 'vue';
 import listaCanciones from '../../lista_canciones/listaCanciones.json';
 
 interface ISong {
@@ -38,10 +34,25 @@ interface ISong {
   ARTISTA: string;
   GENERO: string;
 }
-
+interface Icolumn {
+  name: string;
+  label: string;
+  field: string | ((row: any) => any);
+  required?: boolean;
+  align?: 'left' | 'right' | 'center';
+  sortable?: boolean;
+  sort?: (a: any, b: any, rowA: any, rowB: any) => number;
+  rawSort?: (a: any, b: any, rowA: any, rowB: any) => number;
+  sortOrder?: 'ad' | 'da';
+  format?: (val: any, row: any) => any;
+  style?: string | ((row: any) => string);
+  classes?: string | ((row: any) => string);
+  headerStyle?: string;
+  headerClasses?: string;
+}
 const filter = ref('');
 const rows = ref<ISong[]>();
-const columns = [
+const columns: Icolumn[] = [
   {
     name: 'NUM',
     required: true,
@@ -75,78 +86,9 @@ const columns = [
 onBeforeMount(() => {
   rows.value = listaCanciones;
 });
-
-// const rows = [
-//   {
-//     name: 'Frozen Yogurt',
-//     calories: 159,
-//     fat: 6.0,
-//     carbs: 24,
-//   },
-//   {
-//     name: 'Ice cream sandwich',
-//     calories: 237,
-//     fat: 9.0,
-//     carbs: 37,
-//   },
-//   {
-//     name: 'Eclair',
-//     calories: 262,
-//     fat: 16.0,
-//     carbs: 23,
-//   },
-//   {
-//     name: 'Cupcake',
-//     calories: 305,
-//     fat: 3.7,
-//     carbs: 67,
-//   },
-//   {
-//     name: 'Gingerbread',
-//     calories: 356,
-//     fat: 16.0,
-//     carbs: 49,
-//   },
-//   {
-//     name: 'Jelly bean',
-//     calories: 375,
-//     fat: 0.0,
-//     carbs: 94,
-//   },
-//   {
-//     name: 'Lollipop',
-//     calories: 392,
-//     fat: 0.2,
-//     carbs: 98,
-//   },
-//   {
-//     name: 'Honeycomb',
-//     calories: 408,
-//     fat: 3.2,
-//     carbs: 87,
-//   },
-//   {
-//     name: 'Donut',
-//     calories: 452,
-//     fat: 25.0,
-//     carbs: 51,
-//   },
-//   {
-//     name: 'KitKat',
-//     calories: 518,
-//     fat: 26.0,
-//     carbs: 65,
-//   },
-// ];
-
-// const filtrarCanciones = computed(() => {
-//   if (filtroEstados.value.length === 0) {
-//     return rowTramites.value;
-//   } else {
-//     if (!rowTramites.value) return;
-//     return rowTramites.value.filter((item) =>
-//       filtroEstados.value.includes(item.desC_ESTA_TRA),
-//     );
-//   }
-// });
 </script>
+<style lang="scss" scoped>
+input:focus {
+  outline: none;
+}
+</style>
