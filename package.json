@@ -1,9 +1,9 @@
 {
   "name": "canciones-karaoke",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
-  "author": "Jeff <jefferson.sandoval@gadipmc.gob.ec>",
+  "description": "A Quasar Project canciones-karaoke",
+  "productName": "canciones-karaoke",
+  "author": "Jeff <jeffercs96@gmail.com>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
